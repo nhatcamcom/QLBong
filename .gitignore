@@ -1,0 +1,35 @@
+# ===== Maven / Build =====
+target/
+!.mvn/wrapper/maven-wrapper.jar
+build/
+
+# ===== IDE =====
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+.project
+.classpath
+.settings/
+
+# ===== Log =====
+*.log
+logs/
+
+# ===== Biến môi trường / Bí mật (KHÔNG commit) =====
+.env
+.env.local
+*.pem
+*.key
+
+# ===== Hệ điều hành =====
+.DS_Store
+Thumbs.db
+
+# ===== Output của công cụ Code Review =====
+ocr-result*.json
+review-*.json
+
+# ===== Thư mục lồng không thuộc project (repo con riêng, không commit) =====
+/Ql-SanBong

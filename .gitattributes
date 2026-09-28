@@ -1,2 +1,7 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Chuẩn hóa line-ending để nhóm làm việc trên nhiều hệ điều hành không bị lệch diff
+* text=auto eol=lf
+
+# File nhị phân giữ nguyên
+*.jar binary
+*.png binary
+*.jpg binary

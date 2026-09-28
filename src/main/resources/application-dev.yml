@@ -1,0 +1,12 @@
+# ==========================================================================
+# Cấu hình dành riêng cho môi trường phát triển (profile "dev").
+# Bật log SQL và log DEBUG của ứng dụng để dễ theo dõi khi lập trình.
+# ==========================================================================
+spring:
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    com.example.footballbooking: DEBUG
+    org.hibernate.SQL: DEBUG

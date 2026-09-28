@@ -1,0 +1,59 @@
+# ==========================================================================
+# Cấu hình chung của ứng dụng.
+# Nguyên tắc bảo mật: KHÔNG hard-code thông tin nhạy cảm (user/password/secret).
+# Tất cả đọc từ biến môi trường, kèm giá trị mặc định cho môi trường phát triển.
+# ==========================================================================
+spring:
+  application:
+    name: football-booking-service
+
+  # Nạp biến từ file .env ở thư mục gốc (định dạng KEY=VALUE, coi như .properties).
+  # optional: không lỗi nếu thiếu file. Biến môi trường hệ điều hành vẫn được ưu tiên hơn.
+  config:
+    import: optional:file:.env[.properties]
+
+  # Chọn profile mặc định là "dev"; khi chạy production đặt SPRING_PROFILES_ACTIVE=prod
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
+
+  datasource:
+    # createDatabaseIfNotExist=true giúp tự tạo database khi chạy lần đầu ở môi trường dev
+    url: ${DB_URL:jdbc:mysql://localhost:3306/football_booking?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true&createDatabaseIfNotExist=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      # update: Hibernate tự cập nhật schema theo entity (phù hợp giai đoạn phát triển)
+      ddl-auto: update
+    open-in-view: false   # Tắt để tránh giữ session tới tầng view, phòng ngừa N+1 ẩn
+    properties:
+      hibernate:
+        format_sql: true
+        # Nạp các quan hệ LAZY theo lô (IN clause) để giảm truy vấn N+1 khi map danh sách
+        default_batch_fetch_size: 100
+        # Hibernate 6 tự nhận diện dialect MySQL từ kết nối, không cần khai báo thủ công
+
+server:
+  port: ${SERVER_PORT:8080}
+
+# ==========================================================================
+# Cấu hình riêng của ứng dụng: bí mật JWT và CORS — đọc từ biến môi trường.
+# ==========================================================================
+app:
+  jwt:
+    # Bắt buộc đặt JWT_SECRET ở môi trường thật; giá trị dưới chỉ dùng cho phát triển
+    secret: ${JWT_SECRET:football-booking-dev-secret-key-please-change-in-production-0123456789}
+    # Thời hạn token, mặc định 24 giờ (tính bằng mili-giây)
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+  cors:
+    # Danh sách origin của Frontend, cách nhau bằng dấu phẩy (Next.js mặc định cổng 3000)
+    allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:3000}
+
+# Đường dẫn Swagger UI: http://localhost:8080/swagger-ui.html
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html

@@ -1,0 +1,16 @@
+# ==========================================================================
+# Cấu hình cho môi trường TEST (profile "test").
+# Dùng H2 in-memory để Unit/Integration Test chạy độc lập, KHÔNG cần MySQL thật.
+# ==========================================================================
+spring:
+  datasource:
+    url: jdbc:h2:mem:football_booking;DB_CLOSE_DELAY=-1;MODE=MySQL
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      # create-drop: tạo schema lúc khởi động và xóa khi kết thúc test
+      ddl-auto: create-drop
+    # Không khai báo dialect thủ công: Hibernate 6 tự nhận diện H2 từ kết nối JDBC
